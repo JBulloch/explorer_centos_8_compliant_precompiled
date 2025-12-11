@@ -4,6 +4,24 @@
 [![Documentation](http://img.shields.io/badge/hex.pm-docs-green.svg?style=flat)](https://hexdocs.pm/explorer)
 [![Package](https://img.shields.io/hexpm/v/explorer.svg)](https://hex.pm/packages/explorer)
 
+## Fork Notice - glibc 2.28 Compatible Builds
+
+This is a fork of the official [Explorer](https://github.com/elixir-nx/explorer) package with custom pre-compiled binaries for `x86_64-unknown-linux-gnu` built against **glibc 2.28** (CentOS 8 compatible).
+
+**Key Differences:**
+- The `x86_64-unknown-linux-gnu` pre-compiled binaries are built in a CentOS Stream 8 environment and stored directly in this repository
+- All other platform binaries are downloaded from the upstream Explorer releases
+- This ensures compatibility with CentOS 8 and other systems requiring glibc 2.28
+
+**To rebuild the custom binaries:**
+```bash
+./scripts/prebuild.sh
+```
+
+See [precompiled/README.md](precompiled/README.md) for more details.
+
+---
+
 <!-- MDOC -->
 
 Explorer brings series (one-dimensional) and dataframes (two-dimensional) for fast
@@ -269,7 +287,7 @@ We support the following:
 - `x86_64-apple-darwin` - MacOS running on Intel/AMD 64 bits CPUs.
 - `x86_64-pc-windows-msvc` - Windows running on Intel/AMD 64 bits CPUs, compiled with Visual C++.
 - `x86_64-pc-windows-gnu` - Windows running on Intel/AMD 64 bits CPUs, compiled with GCC.
-- `x86_64-unknown-linux-gnu` - Linux running on Intel/AMD 64 bits CPUs, compiled with GCC.
+- `x86_64-unknown-linux-gnu` - Linux running on Intel/AMD 64 bits CPUs, compiled with GCC GLIBC 2.28 for centos 8.
 - `x86_64-unknown-linux-musl` - Linux running on Intel/AMD 64 bits CPUs, compiled with Musl.
 - `x86_64-unknown-freebsd` - FreeBSD running on Intel/AMD 64 bits.
 

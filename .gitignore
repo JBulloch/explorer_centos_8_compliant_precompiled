@@ -28,8 +28,9 @@ explorer-*.tar
 # Ignore ElixirLS temp files.
 .elixir_ls/
 
-# Shared objects build by Rust.
+# Shared objects build by Rust (but keep precompiled ones for distribution)
 *.so
+!precompiled/*.so
 
 # Allow folks to use their own .envrc
 .envrc
