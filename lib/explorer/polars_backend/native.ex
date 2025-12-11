@@ -8,6 +8,26 @@ defmodule Explorer.PolarsBackend.Native do
   # We want "debug" in dev and test because it's faster to compile.
   mode = if Mix.env() in [:dev, :test], do: :debug, else: :release
 
+  # Module to provide custom base_url for different targets
+  defmodule BaseUrl do
+    @moduledoc false
+
+    def get(%{target: "x86_64-unknown-linux-gnu"}) do
+      # Use local precompiled binaries for x86_64-unknown-linux-gnu (glibc 2.28 compatible)
+      # Use :explorer app directory instead of cwd to work when used as a dependency
+      app_dir = Application.app_dir(:explorer, "precompiled")
+      "file://#{app_dir}"
+    end
+
+    def get(_config) do
+      # Use upstream GitHub releases for all other platforms
+      mix_config = Mix.Project.config()
+      version = mix_config[:version]
+      github_url = mix_config[:package][:links]["GitHub"]
+      "#{github_url}/releases/download/v#{version}"
+    end
+  end
+
   use_legacy =
     Application.compile_env(
       :explorer,
@@ -32,7 +52,7 @@ defmodule Explorer.PolarsBackend.Native do
   use RustlerPrecompiled,
     otp_app: :explorer,
     version: version,
-    base_url: "#{github_url}/releases/download/v#{version}",
+    base_url: {__MODULE__.BaseUrl, :get},
     targets: ~w(
       aarch64-apple-darwin
       aarch64-unknown-linux-gnu
